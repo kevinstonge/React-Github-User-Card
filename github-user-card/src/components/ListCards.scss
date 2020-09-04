@@ -1,0 +1,28 @@
+@import "../base.scss";
+.miniCard {
+  border: 1px solid $bg3;
+  padding: $xs;
+  margin-bottom: $xs;
+  border-radius: 0 $sm 0 0;
+  &:hover {
+    // cursor: pointer;
+    background-color: $fg3;
+    color: $bg3;
+  }
+  > p {
+    @include flexR();
+    justify-content: flex-start;
+  }
+}
+.imageContainer {
+  width: 2rem;
+  height: 2rem;
+  margin-right: $sm;
+  > svg {
+    fill: $em2;
+    width: 2rem;
+  }
+  > img {
+    width: 2rem;
+  }
+}
