@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Favorites from "./components/Favorites";
+import Search from "./components/Search";
 import "./App.scss";
 
 class App extends React.Component {
@@ -9,13 +10,16 @@ class App extends React.Component {
     return (
       <Router>
         <Header />
-        <Switch>
-          <Route path="/favorites">
-            <section className="content">
+        <section className="content">
+          <Switch>
+            <Route path="/favorites">
               <Favorites />
-            </section>
-          </Route>
-        </Switch>
+            </Route>
+            <Route path="/search">
+              <Search />
+            </Route>
+          </Switch>
+        </section>
       </Router>
     );
   }

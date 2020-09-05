@@ -1,24 +1,66 @@
 import React from "react";
+// eslint-disable-next-line
 import Axios from "axios";
+import "./Card.scss";
+import GitHubSVG from "./GitHubSVG";
 class Card extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { login: this.props.match.params.login };
+    this.state = { login: this.props.login, followers: [] };
   }
-  componentDidUpdate(prevProps) {
-    if (this.props.match.params.login !== prevProps.match.params.login) {
-      this.setState({ login: this.props.match.params.login });
-      Axios.get(`https://api.github.com/users/${this.props.match.params.login}`)
-        .then((r) => this.setState(r.data))
-        .catch((e) => console.log(e));
-    }
+  componentDidMount() {
+    Axios.get(`https://api.github.com/users/${this.props.login}`)
+      .then((r) => {
+        this.setState({ ...this.state, ...r.data });
+        Axios.get(`https://api.github.com/users/${this.props.login}/followers`)
+          .then((res) => {
+            this.setState({ ...this.state, followers: res.data });
+          })
+          .catch((err) => console.log(err));
+      })
+      .catch((e) => console.log(e));
   }
-
   render() {
     return (
-      <div className="card bigCard">
-        <h2>{this.state.login}</h2>
-        <p>{this.state.name}</p>
+      <div className="fullScreen" onClick={() => this.props.exit()}>
+        <div className="card bigCard" onClick={(e) => e.stopPropagation()}>
+          <div className="cardHeader">
+            <h2>{this.state.login}</h2>
+            <button>x</button>
+          </div>
+          <div className="cardBody">
+            <div className="cardImages">
+              <img
+                src={this.state.avatar_url}
+                alt={`${this.state.login} avatar`}
+              />
+              <GitHubSVG />
+            </div>
+            <div className="cardInfo">
+              {["Name", "Company", "Location", "Blog", "Bio"].map((stat) => {
+                return (
+                  <p key={`${stat}-p`}>
+                    {stat}:{" "}
+                    {this.state[stat.toLowerCase()]
+                      ? this.state[stat.toLowerCase()]
+                      : `...loading`}
+                  </p>
+                );
+              })}
+              <p>
+                Followers:{" "}
+                {this.state.followers.length > 0 &&
+                  this.state.followers.map((follower, index) => {
+                    if (index < this.state.followers.length - 1) {
+                      return `${follower.login}, `;
+                    } else {
+                      return `${follower.login}`;
+                    }
+                  })}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

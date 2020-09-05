@@ -10,10 +10,12 @@ class Header extends React.Component {
           </h1>
         </header>
         <nav>
-          <NavLink to="/favorites" className="current">
+          <NavLink to="/favorites" activeClassName="current">
             favorites
           </NavLink>
-          <NavLink to="/search">search github</NavLink>
+          <NavLink to="/search" activeClassName="current">
+            search github
+          </NavLink>
         </nav>
       </>
     );

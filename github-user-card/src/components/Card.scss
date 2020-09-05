@@ -1,0 +1,58 @@
+@import "../base.scss";
+.fullScreen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: hsla(0, 0, 0, 0.5);
+  @include flexC();
+  justify-content: flex-start;
+}
+.bigCard {
+  margin-top: $xl;
+  @include flexC();
+  border-radius: 0 $sm 0 0;
+  max-width: 40rem;
+  justify-content: flex-start;
+  background-color: $bg2;
+  .cardHeader {
+    background-color: $em2;
+    border-radius: 0 $sm 0 0;
+    padding-left: $sm;
+    width: 100%;
+    @include flexR();
+    justify-content: space-between;
+    font-weight: bold;
+    button {
+      border: none;
+      border-radius: 0 $sm 0 0;
+      outline: none;
+    }
+  }
+  .cardBody {
+    padding: $sm;
+    @include flexR();
+    max-height: 15rem;
+    align-items: flex-start;
+    .cardImages {
+      @include flexC();
+      margin-right: $sm;
+      > img {
+        width: 5rem;
+        height: 5rem;
+      }
+      > svg {
+        fill: $em2;
+        width: 5rem;
+      }
+    }
+    .cardInfo {
+      @include flexC();
+      justify-content: flex-start;
+      align-items: flex-start;
+      max-height: 15rem;
+      overflow-y: auto;
+    }
+  }
+}

@@ -8,9 +8,8 @@ class Favorites extends React.Component {
   render() {
     return (
       <>
-        <h2>favorites</h2>
         <div className="listBox"></div>
-        <ListCards favorites={this.state.favorites} />
+        <ListCards cards={this.state.favorites} />
       </>
     );
   }

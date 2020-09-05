@@ -1,5 +1,4 @@
 import React from "react";
-import { NavLink, Route, matchPath } from "react-router-dom";
 // eslint-disable-next-line
 import axios from "axios";
 import GitHubSVG from "./GitHubSVG";
@@ -8,65 +7,81 @@ import "./ListCards.scss";
 class ListCards extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      favorites: [
-        ...this.props.favorites.map((favorite) => {
-          return { login: favorite, avatar_url: null };
-        }),
-      ],
-    };
+    this.state = { cards: [], popup: { show: false, login: null } };
   }
-  //   componentDidMount() {
-  //     this.state.favorites.forEach((favorite) => {
-  //       axios.get(`https://api.github.com/users/${favorite.login}`).then((r) =>
-  //         this.setState({
-  //           favorites: this.state.favorites.map((f) => {
-  //             if (f.login === favorite.login) {
-  //               f = { ...f, ...r.data };
-  //             }
-  //             return f;
-  //           }),
-  //         })
-  //       );
-  //     });
-  //   }
+  componentDidMount() {
+    this.update();
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.cards.join(",") !== this.props.cards.join(",")) {
+      this.update();
+    }
+  }
+  update = () => {
+    this.setState(
+      {
+        cards: [
+          ...this.props.cards.map((card) => {
+            return { login: card, avatar_url: null };
+          }),
+        ],
+        popup: { show: false, login: null },
+      },
+      () =>
+        this.state.cards.forEach((card) => {
+          axios
+            .get(`https://api.github.com/users/${card.login}`)
+            .then((r) => {
+              this.setState({
+                cards: this.state.cards.map((c) => {
+                  if (c.login === card.login) {
+                    return { ...r.data };
+                  } else return c;
+                }),
+                popup: { show: false, login: null },
+              });
+            })
+            .catch((e) => console.log(e));
+        })
+    );
+  };
   render() {
     return (
       <>
-        {this.state.favorites.map((favorite) => (
-          <NavLink
-            to={{
-              pathname: `/favorites/${favorite.login}`,
-              githubData: favorite,
-            }}
-            key={`${favorite.login}-miniCard`}
+        {this.state.cards.map((card) => (
+          <div
+            key={`${card.login}-miniCard`}
+            className="card miniCard"
+            onClick={() =>
+              this.setState({
+                ...this.state,
+                popup: { show: true, login: card.login },
+              })
+            }
           >
-            <div className="card miniCard">
-              <p>
-                <span className="imageContainer">
-                  {favorite.avatar_url === null ? (
-                    <GitHubSVG />
-                  ) : (
-                    <img src={favorite.avatar_url} alt={`${favorite.login}`} />
-                  )}
-                </span>
-                {favorite.login}
-              </p>
-            </div>
-          </NavLink>
+            <p>
+              <span className="imageContainer">
+                {card.avatar_url === null ? (
+                  <GitHubSVG />
+                ) : (
+                  <img src={card.avatar_url} alt={`${card.login}`} />
+                )}
+              </span>
+              {card.login}
+            </p>
+          </div>
         ))}
-        <Route
-          path="/favorites/:login"
-          component={() => (
-            <Card
-              match={matchPath(window.location.pathname, {
-                path: "/favorites/:login",
-                exact: false,
-                strict: false,
-              })}
-            />
-          )}
-        ></Route>
+        {this.state.popup.show && (
+          <Card
+            login={this.state.popup.login}
+            exit={() =>
+              this.setState({
+                ...this.state,
+                popup: { show: false, login: null },
+              })
+            }
+          />
+        )}
       </>
     );
   }
