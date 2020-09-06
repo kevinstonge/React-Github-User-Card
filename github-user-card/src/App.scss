@@ -1,0 +1,72 @@
+@import "./base.scss";
+body {
+  background-color: $bg1;
+  color: $fg1;
+  @include flexC();
+  align-items: stretch;
+}
+header,
+nav {
+  padding: $sm;
+  background-color: $bg2;
+  > a,
+  > h1 {
+    padding: $sm;
+    padding-bottom: $xs;
+  }
+}
+a {
+  text-decoration: none;
+  color: $fg1;
+}
+nav {
+  border-bottom: 1px solid $bg3;
+  padding-bottom: $xs;
+
+  > a {
+    border-radius: 0 $sm 0 0;
+    border: 1px solid $bg3;
+    margin-right: $sm;
+    &:hover {
+      color: $bg1;
+      background-color: $fg1;
+    }
+    &.current {
+      background-color: $bg1;
+      border-bottom: 1px solid $bg1;
+      &:hover {
+        color: $fg1;
+        background-color: $bg1;
+        cursor: default;
+      }
+    }
+  }
+}
+
+section {
+  margin: $sm;
+  padding: $sm;
+  border: 1px solid $bg3;
+  background-color: $bg2;
+  border-radius: 0 $sm 0 0;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
