@@ -20,19 +20,31 @@ class Search extends React.Component {
     return (
       <>
         <div className="queryContainer">
-          <label htmlFor="q">
-            <input
-              id="q"
-              onChange={(e) =>
-                this.setState({ ...this.state, query: e.target.value })
-              }
-              value={this.state.query}
-            ></input>
-          </label>
-          <button onClick={() => this.search()}>search</button>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              this.search();
+            }}
+          >
+            <label htmlFor="q">
+              <input
+                id="q"
+                onChange={(e) =>
+                  this.setState({ ...this.state, query: e.target.value })
+                }
+                value={this.state.query}
+              ></input>
+            </label>
+            <button type="submit">search</button>
+          </form>
         </div>
         <div className="listBox"></div>
-        <ListCards cards={this.state.results} />
+        <ListCards
+          cards={this.state.results}
+          addFavorite={this.props.addFavorite}
+          removeFavorite={this.props.removeFavorite}
+          favorites={this.props.favorites}
+        />
       </>
     );
   }

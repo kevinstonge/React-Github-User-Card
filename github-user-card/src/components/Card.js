@@ -1,8 +1,8 @@
 import React from "react";
 // eslint-disable-next-line
 import Axios from "axios";
+import Star from "./Star";
 import "./Card.scss";
-import GitHubSVG from "./GitHubSVG";
 class Card extends React.Component {
   constructor(props) {
     super(props);
@@ -34,7 +34,19 @@ class Card extends React.Component {
                 src={this.state.avatar_url}
                 alt={`${this.state.login} avatar`}
               />
-              <GitHubSVG />
+              {this.props.favorites.indexOf(this.state.login) === -1 ? (
+                <button
+                  onClick={() => this.props.addFavorite(this.state.login)}
+                >
+                  <Star filled={false} />
+                </button>
+              ) : (
+                <button
+                  onClick={() => this.props.removeFavorite(this.state.login)}
+                >
+                  <Star filled={true} />
+                </button>
+              )}
             </div>
             <div className="cardInfo">
               {["Name", "Company", "Location", "Blog", "Bio"].map((stat) => {

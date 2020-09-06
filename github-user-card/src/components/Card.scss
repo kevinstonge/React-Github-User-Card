@@ -1,10 +1,11 @@
 @import "../base.scss";
 .fullScreen {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
   background-color: hsla(0, 0, 0, 0.5);
   @include flexC();
   justify-content: flex-start;
@@ -13,7 +14,7 @@
   margin-top: $xl;
   @include flexC();
   border-radius: 0 $sm 0 0;
-  max-width: 40rem;
+  max-width: 30rem;
   justify-content: flex-start;
   background-color: $bg2;
   .cardHeader {
@@ -42,16 +43,23 @@
         width: 5rem;
         height: 5rem;
       }
-      > svg {
-        fill: $em2;
-        width: 5rem;
+      button {
+        @include flexR();
+        background-color: hsla(0, 0, 0, 0);
+        border: none;
+        outline: none;
+        color: $fg1;
+        &:hover {
+          cursor: pointer;
+        }
       }
     }
     .cardInfo {
       @include flexC();
       justify-content: flex-start;
       align-items: flex-start;
-      max-height: 15rem;
+      // max-height: 15rem;
+      height: 100%;
       overflow-y: auto;
     }
   }

@@ -20,12 +20,12 @@ class ListCards extends React.Component {
   update = () => {
     this.setState(
       {
+        ...this.state,
         cards: [
           ...this.props.cards.map((card) => {
             return { login: card, avatar_url: null };
           }),
         ],
-        popup: { show: false, login: null },
       },
       () =>
         this.state.cards.forEach((card) => {
@@ -33,12 +33,12 @@ class ListCards extends React.Component {
             .get(`https://api.github.com/users/${card.login}`)
             .then((r) => {
               this.setState({
+                ...this.state,
                 cards: this.state.cards.map((c) => {
                   if (c.login === card.login) {
                     return { ...r.data };
                   } else return c;
                 }),
-                popup: { show: false, login: null },
               });
             })
             .catch((e) => console.log(e));
@@ -80,6 +80,9 @@ class ListCards extends React.Component {
                 popup: { show: false, login: null },
               })
             }
+            addFavorite={this.props.addFavorite}
+            removeFavorite={this.props.removeFavorite}
+            favorites={this.props.favorites}
           />
         )}
       </>
